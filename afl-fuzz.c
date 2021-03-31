@@ -9282,6 +9282,13 @@ int main(int argc, char** argv) {
     }
   }
 
+  char log_file[100];
+  snprintf(log_file, sizeof(log_file), "%s", getenv("AFLNET_LEGION_LOG"));
+  log_add_fp(fopen(log_file, "w+"), 0);
+  for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
+    if(kh_exist(khms_states, k)) log_fatal("State %u selected %u times", kh_key(khms_states, k), kh_value(khms_states, k));
+  }
+
   if (queue_cur) show_stats();
 
   /* If we stopped programmatically, we kill the forkserver and the current runner.

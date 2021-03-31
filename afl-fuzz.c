@@ -9117,6 +9117,18 @@ int main(int argc, char** argv) {
 
   setup_ipsm();
 
+  char log_file[100];
+  snprintf(log_file, sizeof(log_file), "%s", getenv("AFLNET_LEGION_LOG"));
+  FILE *logprt = fopen(log_file, "a");
+
+  for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
+    if(kh_exist(khms_states, k))
+    {
+      fprintf(logprt, "State %d selected %d times\n", kh_key(khms_states, k), kh_value(khms_states, k));
+    }
+  }
+  fprintf(logprt, "====================");
+
   setup_dirs_fds();
   read_testcases();
   load_auto();
@@ -9281,10 +9293,6 @@ int main(int argc, char** argv) {
 
     }
   }
-
-  char log_file[100];
-  snprintf(log_file, sizeof(log_file), "%s", getenv("AFLNET_LEGION_LOG"));
-  FILE *logprt = fopen(log_file, "w");
 
   for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
     if(kh_exist(khms_states, k))

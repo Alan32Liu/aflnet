@@ -9297,7 +9297,7 @@ int main(int argc, char** argv) {
   for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
     if(kh_exist(khms_states, k))
     {
-      fprintf(logprt, "State %d selected %d times\n", kh_key(khms_states, k), kh_value(khms_states, k));
+      fprintf(logprt, "State %d selected %d times\n", kh_key(khms_states, k), kh_value(khms_states, k)->selected_times);
     }
   }
   fclose(logprt);

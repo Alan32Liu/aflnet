@@ -9141,7 +9141,7 @@ int main(int argc, char** argv) {
       fprintf(logprt, "State %d selected %d times\n", kh_key(khms_states, k), kh_value(khms_states, k)->selected_times);
     }
   }
-  fprintf(logprt, "====================");
+  fprintf(logprt, "\n====================\n");
 
   setup_dirs_fds();
   read_testcases();

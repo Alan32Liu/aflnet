@@ -5937,6 +5937,17 @@ AFLNET_REGIONS_SELECTION:;
     if (M2_region_count == 0) M2_region_count++; //Mutate one region at least
   }
 
+  /* Log M1 regions to compare with Legion */
+  printf("[SELECTION] Selected state   :")
+  if (!M2_start_region_ID) {
+    printf(" 0\n");
+  } else {
+    for(i = 0; i < queue_cur->regions[M2_start_region_ID-1].state_count; i++) {
+      printf(" %d", queue_cur->regions[M2_start_region_ID-1].state_sequence[i]);
+    }
+    printf("\n");
+  }
+
   /* Construct the kl_messages linked list and identify boundary pointers (M2_prev and M2_next) */
   kl_messages = construct_kl_messages(queue_cur->fname, queue_cur->regions, queue_cur->region_count);
 

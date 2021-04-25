@@ -5938,7 +5938,7 @@ AFLNET_REGIONS_SELECTION:;
   }
 
   /* Log M1 regions to compare with Legion */
-  printf("[SELECTION] Selected state   :")
+  printf("[SELECTION] Selected state   :");
   if (!M2_start_region_ID) {
     printf(" 0\n");
   } else {

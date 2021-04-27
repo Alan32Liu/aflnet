@@ -410,6 +410,9 @@ kliter_t(lms) *M2_prev, *M2_next;
 unsigned int* (*extract_response_codes)(unsigned char* buf, unsigned int buf_size, unsigned int* state_count_ref) = NULL;
 region_t* (*extract_requests)(unsigned char* buf, unsigned int buf_size, unsigned int* region_count_ref) = NULL;
 
+// A file pointer to log
+FILE *logprt;
+
 /* Initialize the implemented state machine as a graphviz graph */
 void setup_ipsm()
 {
@@ -5937,6 +5940,17 @@ AFLNET_REGIONS_SELECTION:;
     if (M2_region_count == 0) M2_region_count++; //Mutate one region at least
   }
 
+  /* Log M1 regions to compare with Legion */
+  fprintf(logprt, "[SELECTION] Selected state   :");
+  if (!M2_start_region_ID) {
+    fprintf(logprt, " 0\n");
+  } else {
+    for(i = 0; i < queue_cur->regions[M2_start_region_ID-1].state_count; i++) {
+      fprintf(logprt, " %d", queue_cur->regions[M2_start_region_ID-1].state_sequence[i]);
+    }
+    fprintf(logprt, "\n");
+  }
+
   /* Construct the kl_messages linked list and identify boundary pointers (M2_prev and M2_next) */
   kl_messages = construct_kl_messages(queue_cur->fname, queue_cur->regions, queue_cur->region_count);
 
@@ -9117,6 +9131,18 @@ int main(int argc, char** argv) {
 
   setup_ipsm();
 
+  char log_file[100];
+  snprintf(log_file, sizeof(log_file), "%s", getenv("AFLNET_LEGION_LOG"));
+  logprt = fopen(log_file, "a");
+
+  for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
+    if(kh_exist(khms_states, k))
+    {
+      fprintf(logprt, "State %d selected %d times\n", kh_key(khms_states, k), kh_value(khms_states, k)->selected_times);
+    }
+  }
+  fprintf(logprt, "\n====================\n");
+
   setup_dirs_fds();
   read_testcases();
   load_auto();
@@ -9282,12 +9308,13 @@ int main(int argc, char** argv) {
     }
   }
 
-  char log_file[100];
-  snprintf(log_file, sizeof(log_file), "%s", getenv("AFLNET_LEGION_LOG"));
-  log_add_fp(fopen(log_file, "w+"), 0);
   for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
-    if(kh_exist(khms_states, k)) log_fatal("State %u selected %u times", kh_key(khms_states, k), kh_value(khms_states, k));
+    if(kh_exist(khms_states, k))
+    {
+      fprintf(logprt, "State %d selected %d times\n", kh_key(khms_states, k), kh_value(khms_states, k)->selected_times);
+    }
   }
+  fclose(logprt);
 
   if (queue_cur) show_stats();
 

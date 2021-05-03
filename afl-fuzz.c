@@ -890,8 +890,13 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
 
   // Log every new state sequence
   fprintf(logprt, "[Execution] New code sequence:");
+//  for (u32 num_null_region = 0; num_null_region < q->region_count; num_null_region++) {
+//    if (q->regions[q->region_count-1-num_null_region]) {
+//      break;
+//    }
+//  }
   u32 num_null_region = 0;
-  while (q->regions[q->region_count-1-num_null_region] == NULL) {
+  while (q->regions[q->region_count-1-num_null_region].state_sequence == NULL) {
     num_null_region++;
   }
   if (num_null_region>0) {

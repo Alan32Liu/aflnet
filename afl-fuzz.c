@@ -900,7 +900,7 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
     }
     fprintf(logprt, "\n");
   } else {
-    fprintf(logprt, "All regions are null")
+    fprintf(logprt, "All regions are null");
   }
 
 

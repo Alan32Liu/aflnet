@@ -896,7 +896,7 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
   }
   if (num_null_region>0) {
     for(i = 0; i < q->regions[q->region_count-1-num_null_region].state_count; i++) {
-      fprintf(logprt, " %d", queue_cur->regions[q->region_count-1-num_null_region].state_sequence[i]);
+      fprintf(logprt, " %d", q->regions[q->region_count-1-num_null_region].state_sequence[i]);
     }
     fprintf(logprt, "\n");
   } else {

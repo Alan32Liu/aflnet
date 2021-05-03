@@ -888,6 +888,13 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
   //Annotate the regions
   update_region_annotations(q);
 
+  // Log every new state sequence
+  fprintf(logprt, "[Execution] New code sequence:");
+  for(i = 0; i < q->regions[q->region_count-1].state_count; i++) {
+    fprintf(logprt, " %d", queue_cur->regions[q->region_count-1].state_sequence[i]);
+  }
+  fprintf(logprt, "\n");
+
   //Update the states hashtable to keep the list of seeds which help us to reach a specific state
   //Iterate over the regions & their annotated state (sub)sequences and update the hashtable accordingly
   //All seed should "reach" state 0 (initial state) so we add this one to the map first

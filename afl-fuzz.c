@@ -890,10 +890,19 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
 
   // Log every new state sequence
   fprintf(logprt, "[Execution] New code sequence:");
-  for(i = 0; i < q->regions[q->region_count-1].state_count; i++) {
-    fprintf(logprt, " %d", queue_cur->regions[q->region_count-1].state_sequence[i]);
+  u32 num_null_region = 0;
+  while (!q->regions[q->regions[q->region_count-1-num_null_region]]) {
+    num_null_region++;
   }
-  fprintf(logprt, "\n");
+  if (num_null_region>0) {
+    for(i = 0; i < q->regions[q->region_count-1].state_count; i++) {
+      fprintf(logprt, " %d", queue_cur->regions[q->region_count-1].state_sequence[i]);
+    }
+    fprintf(logprt, "\n");
+  } else {
+    fprintf(logprt, "All regions are null")
+  }
+
 
   //Update the states hashtable to keep the list of seeds which help us to reach a specific state
   //Iterate over the regions & their annotated state (sub)sequences and update the hashtable accordingly

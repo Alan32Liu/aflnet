@@ -899,13 +899,13 @@ void update_state_aware_variables(struct queue_entry *q, u8 dry_run)
   while (q->regions[q->region_count-1-num_null_region].state_sequence == NULL) {
     num_null_region++;
   }
-  if (num_null_region>0) {
+  if (q->region_count-1-num_null_region>=0) {
     for(i = 0; i < q->regions[q->region_count-1-num_null_region].state_count; i++) {
       fprintf(logprt, " %d", q->regions[q->region_count-1-num_null_region].state_sequence[i]);
     }
     fprintf(logprt, "\n");
   } else {
-    fprintf(logprt, "All regions are null");
+    fprintf(logprt, "All regions are null\n");
   }
 
 

@@ -9153,7 +9153,7 @@ int main(int argc, char** argv) {
   setup_ipsm();
 
   char log_file[100];
-  snprintf(log_file, sizeof(log_file), "%s", getenv("AFLNET_LEGION_LOG"));
+  snprintf(log_file, sizeof(log_file), "%s", getenv("FUZZER_LOG"));
   logprt = fopen(log_file, "a");
 
   for (khiter_t k = kh_begin(khms_states); k != kh_end(khms_states) ; ++k) {
